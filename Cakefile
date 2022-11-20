@@ -35,6 +35,12 @@ task 'compile-browser', 'Compile with browserify for the web', ->
       .then (minSrc) ->
         writeFile './dist/psd.js.map', minSrc.map
       .then ->
+        # jsContent = fs.readFileSync './dist/psd.js', (err, data) ->
+        jsContent = fs.readFileSync './dist/psd.min.js', (err, data) ->
+          return reject(err) if err?
+        # writeFile './dist/psd.umd.js', jsContent.toString().replace('require=', 'export default (').slice(0, -2) + "('psd'))"
+        writeFile './dist/psd.umd.js', jsContent.toString().replace('require=', 'export default (').replace(";\n//# sourceMappingURL=psd.js.map","('psd'));\n//# sourceMappingURL=psd.js.map")
+      .then ->
         console.log 'Finished!'
 
 task 'docs:generate', 'Generate documentation', ->

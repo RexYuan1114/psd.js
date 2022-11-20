@@ -33,6 +33,7 @@ module.exports = class TextElements extends LayerInfo
     @descriptorVersion = @file.readInt()
 
     @textData = new Descriptor(@file).parse()
+    console.log(@textData)
     @textValue = @textData['Txt ']
     @engineData = parseEngineData(@textData.EngineData)
 
