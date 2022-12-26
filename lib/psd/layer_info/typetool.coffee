@@ -50,8 +50,13 @@ module.exports = class TextElements extends LayerInfo
       @transform[name] = @file.readDouble()
 
   fonts: ->
-    return [] unless @engineData?
-    @engineData.ResourceDict.FontSet.map (f) -> f.Name
+    data = @engineData.EngineDict.StyleRun.RunArray.map (r) ->
+      r.StyleSheet.StyleSheetData
+    fonts = @engineData.ResourceDict.FontSet
+    data.map (f) ->
+      # console.log(f, f.Font, fonts[f.Font])
+      return fonts[f.Font].Name
+    # @engineData.ResourceDict.FontSet.map (f) -> f.Name
 
   lengthArray: ->
     arr = @engineData.EngineDict.StyleRun.RunLengthArray
@@ -98,6 +103,16 @@ module.exports = class TextElements extends LayerInfo
       else
         leading = 'auto'
       return leading
+
+  tracking: ->
+    data = @engineData.EngineDict.StyleRun.RunArray.map (r) ->
+      r.StyleSheet.StyleSheetData
+    data.map (f) ->
+      if isNaN(f.Tracking)
+        tracking = 0
+      else
+        tracking = f.Tracking
+      return tracking
 
   sizes: ->
     return [] if not @engineData? and not @styles().FontSize?
@@ -165,6 +180,7 @@ module.exports = class TextElements extends LayerInfo
       alignment: @alignment()
       textDecoration: @textDecoration()
       leading: @leading()
+      tracking: @tracking()
     left: @coords.left
     top: @coords.top
     right: @coords.right
