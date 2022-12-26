@@ -1,4 +1,4 @@
-_ = require 'lodash'
+{tap} = window._
 
 module.exports = class ResourceSection
   RESOURCES = [
@@ -12,6 +12,6 @@ module.exports = class ResourceSection
   @factory: (resource) ->
     for Section in RESOURCES
       continue unless Section::id is resource.id
-      return _.tap new Section(resource), (s) -> s.parse()
+      return tap new Section(resource), (s) -> s.parse()
 
     null

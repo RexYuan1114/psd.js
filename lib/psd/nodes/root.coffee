@@ -1,4 +1,4 @@
-_     = require 'lodash'
+{last} = window._
 Node  = require '../node.coffee'
 Group = require './group.coffee'
 Layer = require './layer.coffee'
@@ -48,7 +48,7 @@ module.exports = class Root extends Node
     for layer in @psd.layers
       if layer.isFolder()
         parseStack.push currentGroup
-        currentGroup = new Group(layer, _.last(parseStack))
+        currentGroup = new Group(layer, last(parseStack))
       else if layer.isFolderEnd()
         parent = parseStack.pop()
         parent.children().push currentGroup

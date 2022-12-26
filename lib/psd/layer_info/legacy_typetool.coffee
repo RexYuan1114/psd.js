@@ -1,4 +1,4 @@
-_ = require 'lodash'
+{tap} = window._
 TypeTool = require './typetool.coffee'
 
 module.exports = class LegacyTypeTool extends TypeTool
@@ -30,7 +30,7 @@ module.exports = class LegacyTypeTool extends TypeTool
 
     facesCount = @file.readShort()
     for i in [0...facesCount]
-      @faces.push _({}).tap (face) =>
+      @faces.push tap {}, (face) =>
         face.mark = @file.readShort()
         face.fontType = @file.readInt()
         face.fontName = @file.readString()
@@ -45,7 +45,7 @@ module.exports = class LegacyTypeTool extends TypeTool
 
     stylesCount = @file.readShort()
     for i in [0...stylesCount]
-      @styles.push _({}).tap (style) =>
+      @styles.push tap {}, (style) =>
         style.mark = @file.readShort()
         style.faceMark = @file.readShort()
         style.size = @file.readInt()
@@ -69,7 +69,7 @@ module.exports = class LegacyTypeTool extends TypeTool
 
     linesCount = @file.readShort()
     for i in [0...linesCount]
-      @lines.push _({}).tap (line) ->
+      @lines.push tap {}, (line) ->
         line.charCount = @file.readInt()
         line.orientation = @file.readShort()
         line.alignment = @file.readShort()

@@ -18,6 +18,9 @@ task 'compile-browser', 'Compile with browserify for the web', ->
     noParse: [
       'fs'
     ]
+    transform: [
+      ['browserify-shim', { "lodash": "global:_lodash" }]
+    ]
   .transform('coffeeify')
   .require('./shims/png.coffee', expose: './image_exports/png.coffee')
   .require('./shims/init.coffee', expose: './psd/init.coffee')
@@ -39,7 +42,7 @@ task 'compile-browser', 'Compile with browserify for the web', ->
         jsContent = fs.readFileSync './dist/psd.min.js', (err, data) ->
           return reject(err) if err?
         # writeFile './dist/psd.umd.js', jsContent.toString().replace('require=', 'export default (').slice(0, -2) + "('psd'))"
-        writeFile './dist/psd.umd.js', jsContent.toString().replace('require=', 'export default (').replace(";\n//# sourceMappingURL=psd.js.map","('psd'));\n//# sourceMappingURL=psd.js.map")
+        writeFile './dist/psd.umd.js', 'window._ = require(\'lodash\')\r\nwindow.fs = require(\'fs\')\r\n' +  jsContent.toString().replace('require=', 'export default (').replace(";\n//# sourceMappingURL=psd.js.map","('psd'));\n//# sourceMappingURL=psd.js.map")
       .then ->
         console.log 'Finished!'
 

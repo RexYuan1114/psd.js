@@ -1,4 +1,4 @@
-_ = require 'lodash'
+{reduce} = window._
 parseEngineData = require 'parse-engine-data'
 LayerInfo = require '../layer_info.coffee'
 Descriptor = require '../descriptor.coffee'
@@ -33,7 +33,6 @@ module.exports = class TextElements extends LayerInfo
     @descriptorVersion = @file.readInt()
 
     @textData = new Descriptor(@file).parse()
-    console.log(@textData)
     @textValue = @textData['Txt ']
     @engineData = parseEngineData(@textData.EngineData)
 
@@ -56,7 +55,7 @@ module.exports = class TextElements extends LayerInfo
 
   lengthArray: ->
     arr = @engineData.EngineDict.StyleRun.RunLengthArray
-    sum = _.reduce(arr, (m, o) -> m + o)
+    sum = reduce(arr, (m, o) -> m + o)
     arr[arr.length - 1] = arr[arr.length - 1] - 1 if sum - @textValue.length == 1
     return arr
 
@@ -128,7 +127,7 @@ module.exports = class TextElements extends LayerInfo
     data = @engineData.EngineDict.StyleRun.RunArray.map (r) ->
       r.StyleSheet.StyleSheetData
 
-    @_styles = _.reduce(data, (m, o) ->
+    @_styles = reduce(data, (m, o) ->
       for own k, v of o
         m[k] or= []
         m[k].push v

@@ -1,4 +1,4 @@
-_ = require 'lodash'
+{merge} = window._
 
 # A path record describes a single point in a vector path. This is used
 # in a couple of different places, but most notably in vector shapes.
@@ -17,7 +17,7 @@ module.exports = class PathRecord
       else @file.seek(24, true)
 
   export: ->
-    _.merge { recordType: @recordType }, switch @recordType
+    merge { recordType: @recordType }, switch @recordType
       when 0, 3 then { numPoints: @numPoints }
       when 1, 2, 4, 5
         linked: @linked

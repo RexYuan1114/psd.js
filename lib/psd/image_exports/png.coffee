@@ -1,4 +1,4 @@
-fs = require 'fs'
+fs = window.fs
 {PNG} = require 'pngjs'
 RSVP = require 'rsvp'
 
@@ -14,7 +14,7 @@ module.exports =
         .pack()
         .pipe(fs.createWriteStream(output))
         .on 'finish', resolve
-        
+
   maskToPng: ->
     png = new PNG(filterType: 4, width: @layer.mask.width, height: @layer.mask.height)
     png.data = @maskData

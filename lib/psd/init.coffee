@@ -1,4 +1,4 @@
-fs = require 'fs'
+fs = window.fs
 RSVP = require 'rsvp'
 
 # The init methods for the NodeJS version of PSD.js. When compiled for
